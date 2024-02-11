@@ -115,7 +115,11 @@
           $window.on('unload.' + namespace, function() { });
 
           $document.on('click.' + namespace, options.linkElement, function(event) {
-            event.preventDefault();
+
+            if(event.originalEvent.defaultPrevented) {
+              return;
+            }
+
             var $self = $(this);
             var url = $self.attr('href');
 
@@ -123,7 +127,7 @@
             // if(middle mouse button || command key || shift key || win control key)
             if (event.which === 2 || event.metaKey || event.shiftKey || navigator.platform.toUpperCase().indexOf('WIN') !== -1 && event.ctrlKey) {
               window.open(url, '_blank');
-            } else if(!event.originalEvent.defaultPrevented) {
+            } else {
               __.out.call(_this, $self, url);
             }
 
